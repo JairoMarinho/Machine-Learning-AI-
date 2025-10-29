@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# Ambiente
+.venv/
+
+# macOS
+.DS_Store
+
+# Dados (CSV gerado pelo app)
+data/*.csv
+
+# Streamlit
+.streamlit/
