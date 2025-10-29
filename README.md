@@ -1,226 +1,226 @@
-🩺 ML na Saúde — Classificação de Câncer de Mama (Streamlit)
 
-Aplicação interativa em Streamlit demonstrando:
+# 🩺 ML na Saúde — Classificação de Câncer de Mama (Streamlit)
 
-Aprendizagem Supervisionada (Regressão Logística, Random Forest, SVM–RBF)
+[![Streamlit](https://img.shields.io/badge/Streamlit-app-ff4b4b?logo=streamlit\&logoColor=white)](#-demo)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python\&logoColor=white)](https://www.python.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn\&logoColor=white)](https://scikit-learn.org/)
+[![Plotly](https://img.shields.io/badge/Plotly-Interactive-3F4F75?logo=plotly\&logoColor=white)](https://plotly.com/python/)
+[![License](https://img.shields.io/badge/License-Academic-lightgrey)](#-licença)
 
-Aprendizagem Não Supervisionada (K-Means + PCA em 2D)
+Aplicação **interativa** em Streamlit demonstrando:
 
-A interface fica dividida em duas colunas:
+* **Aprendizagem Supervisionada** (Regressão Logística, Random Forest, SVM–RBF)
+* **Aprendizagem Não Supervisionada** (K-Means + PCA em 2D)
 
-▶️ Esquerda: modelos supervisionados (métricas, ROC, Matriz de Confusão, importância/coeficientes)
+A interface fica **dividida em duas colunas**:
+▶️ **Esquerda:** modelos supervisionados (métricas, ROC, Matriz de Confusão, importância/coeficientes)
+🧩 **Direita:** K-Means com PCA (2D), *Silhouette score*, resumo por cluster
 
-🧩 Direita: K-Means com PCA (2D), Silhouette score, resumo por cluster
+O dataset é o **Breast Cancer Wisconsin** (via `scikit-learn`) e é **gerado localmente** (`data/breast_cancer.csv`).
 
-O dataset é o Breast Cancer Wisconsin (via sklearn), e é gerado localmente em CSV na pasta data/.
+---
 
-🔗 Entregáveis
+## 📌 Sumário
 
-App (Streamlit Cloud): https://ml-saude-SEUUSUARIO.streamlit.app
+* [Demo](#-demo)
+* [Arquitetura & Pipeline](#-arquitetura--pipeline)
+* [Recursos (o que você verá no app)](#-recursos-o-que-você-verá-no-app)
+* [Pré-requisitos (macOS)](#-prérequisitos-macos)
+* [Instalação Rápida (1 comando)](#-instalação-rápida-1-comando)
+* [Instalação Passo a Passo (macOS)](#-instalação-passo-a-passo-macos)
+* [Como Usar (guiado)](#-como-usar-guiado)
+* [Gráficos & Dashboard (exemplos)](#-gráficos--dashboard-exemplos)
+* [Planilha & Relatórios](#-planilha--relatórios)
+* [Estrutura do Projeto](#-estrutura-do-projeto)
+* [Deploy no Streamlit Cloud](#-deploy-no-streamlit-cloud)
+* [Boas Práticas & Próximos Passos](#-boas-práticas--próximos-passos)
+* [Troubleshooting (macOS)](#-troubleshooting-macos)
+* [Licença](#-licença)
 
-Repositório (GitHub): https://github.com/SEUUSUARIO/ml-saude-bc
+---
 
-Substitua pelos seus links ao publicar.
+## 🚀 Demo
 
-📦 Estrutura do Projeto
+> Substitua pelos seus links reais quando publicar:
+
+* **App (Streamlit Cloud):** `https://ml-saude-SEUUSUARIO.streamlit.app`
+* **Repositório (GitHub):** `https://github.com/SEUUSUARIO/ml-saude-bc`
+
+---
+
+
+## ✨ Recursos (o que você verá no app)
+
+* **Duas colunas lado a lado:**
+
+  * **Supervisionado:** escolha do modelo, métricas (Accuracy, Precision, Recall, F1, ROC AUC), **Matriz de Confusão**, **Curva ROC**, **importância/coeficientes**, **validação cruzada (5-fold)**.
+  * **Não supervisionado:** **K-Means** (k ajustável), **PCA (2D)** com gráficos interativos (Plotly), **Silhouette score**, **tabela** com tamanho e % de malignos por cluster.
+* **EDA rápida:** dimensões, amostra, verificação de ausentes e balanceamento do target.
+* **Relatório exportável:** download de **Markdown** com resumo do experimento.
+
+---
+
+## 🍎 Pré-requisitos (macOS)
+
+* **Homebrew** (opcional, recomendado):
+
+  ```bash
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+* **Python 3.11** (recomendado para evitar problemas com wheels no 3.13):
+
+  ```bash
+  brew install python@3.11
+  ```
+
+---
+
+## ⚡ Instalação Rápida (1 comando)
+
+Dentro da pasta do projeto:
+
+```bash
+python3.11 -m venv .venv && source .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements.txt && streamlit run app.py
+```
+
+O app abre em **[http://localhost:8501](http://localhost:8501)**.
+
+---
+
+## 🧩 Instalação Passo a Passo (macOS)
+
+```bash
+# 1) entrar no projeto
+cd /caminho/para/ml-saude-bc
+
+# 2) criar e ativar venv (Python 3.11)
+python3.11 -m venv .venv
+source .venv/bin/activate
+
+# 3) instalar dependências
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+# 4) rodar
+streamlit run app.py
+```
+
+> Se preferir outra porta: `streamlit run app.py --server.port 8502`
+
+---
+
+## 🧭 Como Usar (guiado)
+
+1. **Sidebar**: defina *seed*, **test_size** e se quer **padronizar features**.
+2. **Dataset & EDA**: confira dimensões, amostra e balanceamento.
+3. **Coluna esquerda (Supervisionado)**:
+
+   * Selecione o modelo (LogReg, RF, SVM-RBF).
+   * Ajuste hiperparâmetros nos *sliders*.
+   * Analise **métricas**, **Matriz de Confusão**, **Curva ROC** (quando disponível) e **importâncias/coeficientes**.
+   * Veja a **validação cruzada (5-fold)**.
+4. **Coluna direita (Não supervisionado)**:
+
+   * Ajuste **k** do K-Means (2–6).
+   * Observe a projeção **PCA (2D)** por **cluster** e por **rótulo real**.
+   * Confira o **Silhouette score** e a **tabela** com **tamanho** e **% de malignos** por cluster.
+5. **Relatório**:
+
+   * Selecione seções e **baixe o Markdown** (`relatorio_ml_saude.md`).
+
+---
+
+## 📑 Planilha & Relatórios
+
+* **CSV gerado automaticamente**: `data/breast_cancer.csv` na primeira execução.
+* **Relatório em Markdown**: use a aba **Relatório & Reprodutibilidade** para baixar `relatorio_ml_saude.md`.
+* **Dica**: você pode abrir o CSV no Excel/Numbers/Google Sheets para análises tabulares adicionais.
+
+> Se quiser, crie uma pasta `reports/` no repo e **acompanhe versões** dos relatórios (ex.: `reports/2025-10-29_relatorio.md`).
+
+---
+
+## 🧱 Estrutura do Projeto
+
+```
 .
 ├─ app.py                # UI do Streamlit (duas colunas: Superv. | Não Superv.)
 ├─ utils_ml.py           # EDA, métricas, matriz de confusão (Plotly), relatório
 ├─ requirements.txt      # Dependências (leves e compatíveis com Streamlit Cloud)
 ├─ README.md             # Este arquivo
-└─ data/                 # Será criado o CSV: data/breast_cancer.csv
+├─ data/                 # CSV gerado: data/breast_cancer.csv
+└─ assets/               # (opcional) screenshots para o README
+```
 
+---
 
-O arquivo data/breast_cancer.csv é criado automaticamente na primeira execução.
+## ☁️ Deploy no Streamlit Cloud
 
-⚙️ Tecnologias
+1. Suba o projeto no **GitHub** (branch `main`).
+2. Acesse **[https://share.streamlit.io/](https://share.streamlit.io/)** e conecte sua conta GitHub.
+3. Selecione o repositório e o arquivo principal **`app.py`**.
+4. Confirme as dependências via `requirements.txt`.
+5. Publique. Seu link ficará algo como:
 
-Python: 3.11+ (recomendado para compatibilidade de wheels)
+   ```
+   https://ml-saude-SEUUSUARIO.streamlit.app
+   ```
 
-Framework Web: Streamlit
+---
 
-ML/Data: scikit-learn, pandas, numpy
+## 🧭 Boas Práticas & Próximos Passos
 
-Visualizações: Plotly
+* **Modelos adicionais**: XGBoost/LightGBM, tuning com **Optuna**.
+* **Explicabilidade**: **SHAP** para explicações locais/globais.
+* **Fairness**: métricas de equidade, avaliação de **custo assimétrico**.
+* **Produção**: pipelines `sklearn`, versionamento de dados/modelos, **monitoramento de drift**.
+* **Testes**: unitários para funções (ex.: `utils_ml.py`).
 
-🚀 Quick Start (macOS)
+---
 
-Abra o Terminal na pasta do projeto e rode um único comando:
+## 🆘 Troubleshooting (macOS)
 
-python3 -m venv .venv && source .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements.txt && streamlit run app.py
+**1) `ModuleNotFoundError: No module named 'plotly'`**
+Ative a venv correta e reinstale:
 
-
-O app abrirá em http://localhost:8501.
-
-Se aparecer erro para instalar scikit-learn no Python 3.13, use Python 3.11 (ver seção abaixo).
-
-🍎 Setup no MacBook (passo a passo)
-1) Pré-requisitos (Homebrew e Python)
-
-Se ainda não tem o Homebrew:
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-
-Instale o Python 3.11 (evita problemas de wheel no 3.13):
-
-brew install python@3.11
-
-2) Ambiente virtual (zsh)
-python3.11 -m venv .venv
+```bash
 source .venv/bin/activate
-
-3) Dependências
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-
-4) Rodar o app
-streamlit run app.py
-
-🧠 Funcionalidades
-📥 Dataset & EDA
-
-Carrega sklearn.datasets.load_breast_cancer
-
-Gera data/breast_cancer.csv (para reprodutibilidade)
-
-Mostra dimensões, amostra, valores ausentes e balanceamento do target
-
-🎓 Coluna Esquerda — Supervisionado
-
-Modelos: Regressão Logística | Random Forest | SVM (RBF)
-
-Métricas: Accuracy, Precision, Recall, F1, ROC AUC
-
-Gráficos: Matriz de Confusão (Plotly), Curva ROC
-
-Interpretação: Importância (RF) e coeficientes (modelos lineares)
-
-Validação Cruzada: 5-fold (accuracy)
-
-🧩 Coluna Direita — Não Supervisionado
-
-K-Means (k ajustável) + PCA (2D)
-
-Silhouette score
-
-Resumo por cluster: tamanho e % de malignos por cluster
-
-📥 Relatório
-
-Geração de Markdown (relatorio_ml_saude.md) com seções selecionáveis:
-
-Introdução, Dataset, Pré-processamento, Resultados (sup/unsup), Conclusões
-
-☁️ Publicação no Streamlit Cloud (macOS)
-
-Suba o repositório no GitHub (ou faça fork).
-
-Acesse https://share.streamlit.io/
- e conecte seu GitHub.
-
-Selecione o repositório, branch e o arquivo principal app.py.
-
-Confirme o uso do requirements.txt.
-
-Publique e pegue o link (https://ml-saude-SEUUSUARIO.streamlit.app).
-
-🧪 Comandos úteis (macOS)
-
-Ativar venv
-
-source .venv/bin/activate
-
-
-Verificar Python/pip ativos (devem apontar para .venv)
-
-which python
-which pip
-
-
-Teste rápido das importações
-
-python -c "import streamlit, pandas, numpy, sklearn, plotly; print('OK')"
-
-
-Rodar em porta alternativa
-
-streamlit run app.py --server.port 8502
-
-🛠️ Troubleshooting (macOS)
-1) ModuleNotFoundError: No module named 'plotly'
-
-Garanta que a venv está ativa (.venv no prompt)
-
-Reinstale:
-
 pip install plotly
+```
 
-2) ModuleNotFoundError: No module named 'utils_ml'
+**2) `ModuleNotFoundError: No module named 'utils_ml'`**
+`app.py` e `utils_ml.py` precisam estar na **mesma pasta**.
+Rode o app **dentro** do diretório do projeto:
 
-app.py e utils_ml.py devem estar na mesma pasta.
-
-Rode o app dentro da pasta do projeto:
-
+```bash
 cd /caminho/para/ml-saude-bc
 streamlit run app.py
+```
 
-3) Erros ao instalar scikit-learn (Python 3.13)
+**3) Erros com scikit-learn no Python 3.13**
+Use **Python 3.11**:
 
-Prefira Python 3.11 (tem wheels prontos):
-
+```bash
 brew install python@3.11
-python3.11 -m venv .venv
-source .venv/bin/activate
+python3.11 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-4) TypeError: '<' not supported between instances of 'str' and 'int'
+**4) Rodar em outra porta**
 
-Corrigido no código final: índices de clusters unificados como str no resumo por cluster.
+```bash
+streamlit run app.py --server.port 8502
+```
 
-🧾 Requirements (já prontos)
+---
 
-Arquivo requirements.txt:
+## 📄 Licença
 
-streamlit>=1.37
-pandas>=2.1
-numpy>=1.26
-scikit-learn>=1.4
-plotly>=5.22
+Uso **acadêmico/educacional**. Sinta-se livre para forkar, adaptar e evoluir.
 
-📚 Metodologia (resumo)
+---
 
-Coleta/Criação do dataset a partir do sklearn → CSV local
-
-Pré-processamento: train/test split estratificado, StandardScaler (opcional)
-
-Treino/Validação: métricas + 5-fold CV
-
-Interpretação: Matriz de Confusão, ROC, importâncias/coeficientes
-
-Não supervisionado: K-Means + PCA (2D), Silhouette, tabela por cluster
-
-Comunicação: gráficos interativos e relatório em Markdown
-
-🤝 Contribuição
-
-Contribuições são bem-vindas!
-Sugestões de melhoria:
-
-Hiperparâmetros com Optuna
-
-Modelos adicionais (XGBoost/LightGBM)
-
-Fairness & explicabilidade (SHAP)
-
-Pipeline sklearn + model persistence (joblib)
-
-📄 Licença
-
-Projeto para fins acadêmicos/educacionais.
-Sinta-se à vontade para forkar e adaptar.
-
-👋 Dica final (MacBook)
-
-Se usar Apple Silicon (M1/M2/M3), o fluxo com python@3.11 e pip atualizado tende a evitar compilações demoradas e incompatibilidades.
+> **Contato & Suporte**
+> Achou um bug, quer sugerir melhoria ou pedir uma feature?
+> Abra uma **Issue** no GitHub com screenshot/log e passos para reproduzir.
